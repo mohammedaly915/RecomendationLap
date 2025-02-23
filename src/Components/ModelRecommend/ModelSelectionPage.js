@@ -124,7 +124,7 @@ const CustomSelect = ({ label, options, value, onChange, required = false }) => 
   };
 const CustomRadioGroup = ({ label, options, value, onChange}) => {
 
-  
+   
   return (
     <div className="w-full">
       <label className="block font-semibold text-gray-300 mb-2 text-lg font-large px-2 py-2 rounded-md shadow-sm  flex items-center gap-2">
