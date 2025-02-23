@@ -64,12 +64,14 @@ const CustomSelect = ({ label, options, value, onChange, required = false }) => 
     return (
       <div className="relative w-full" ref={selectRef}>
 <label
-    className={`block mb-2 text-md font-semibold text-gray-200 bg-gray-900/50 px-2 py-1 rounded-md shadow-sm ${
-      required && !isSelected ? "text-red-400" : "text-gray-200"
-    }`}
-  >
-    {label} {required && <span className="text-red-500 font-bold">*</span>}
-  </label>        
+        className={`block mb-2 text-lg font-semibold text-gray-200   px-2 py-2 rounded-md shadow-sm transition-all duration-200 ${
+          required && !isSelected
+            ? 'text-red-400 border-b border-red-500'
+            : 'text-gray-200 border-b border-indigo-600/40 hover:bg-gray-800/60'
+        }`}
+      >
+        {label} {required && <span className="text-red-500 font-bold">*</span>}
+      </label>       
   <motion.div
           className={`bg-gray-800/80 backdrop-blur-md rounded-xl p-3 flex items-center justify-between cursor-pointer text-gray-200 hover:bg-gray-800 transition-all duration-300 shadow-md ${
             required && !isSelected
@@ -125,7 +127,7 @@ const CustomRadioGroup = ({ label, options, value, onChange}) => {
   
   return (
     <div className="w-full">
-      <label className="block text-gray-300 mb-2 text-sm font-medium flex items-center gap-2">
+      <label className="block font-semibold text-gray-300 mb-2 text-lg font-large px-2 py-2 rounded-md shadow-sm  flex items-center gap-2">
         {label}
       </label>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">

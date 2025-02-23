@@ -81,25 +81,24 @@ const ChatBot = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: isOpen ? 1 : 0, y: isOpen ? 0 : 20 }}
         transition={{ duration: 0.3 }}
-        className={`absolute bottom-[80px] left-[15px] w-[400px] h-[500px] bg-white bg-opacity-90 backdrop-blur-md rounded shadow-xl transition-all duration-300 ${
+        className={`absolute bottom-[80px] left-[5px] w-[400px] h-[500px] bg-white bg-opacity-90 backdrop-blur-md rounded shadow-xl transition-all duration-300 ${
           isOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
       >
         {/* Updated Header */}
         <div className="bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 text-white p-3 rounded-t-xl flex justify-between items-center shadow-md">
-            <div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-start space-x-2">
             <MdChat size={24} className="text-indigo-200" />
+            <div>
             <h3 className="text-sm font-medium tracking-wide">
-              AI Strategy Chatbot <span className="text-indigo-200">by Dr. Mohamed Helmy</span>
+              AI Strategy Chatbot
             </h3>
-            </div>
-            
-            
-              
             <p className="text-xs text-indigo-200">
-                  Ask me anything about AI strategies for labs, brought to you by Dr. Mohamed Helmy’s research!
-                </p>
+                  Ask me anything about AI strategies for labs
+              </p>
+          </div>
+              
+            
           </div>
           <button
             onClick={() => setIsOpen(false)}
