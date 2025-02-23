@@ -9,7 +9,7 @@ const ReloadModal = ({ onContinue, onCancel }) => (
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
-    className="fixed inset-0 bg-gray-900/80 backdrop-blur-sm flex items-center justify-center z-50"
+    className="absolute h-[100vh] w-[100%] z-[999] inset-0 bg-gray-900/80 backdrop-blur-sm flex items-center justify-center "
   >
     <div className="bg-gray-800 rounded-xl p-6 shadow-2xl max-w-sm w-full">
       <h2 className="text-xl font-semibold text-white mb-4">
@@ -62,9 +62,9 @@ const CustomSelect = ({ label, options, value, onChange, required = false }) => 
   }, [isOpen]);
   
     return (
-      <div className="relative w-full" ref={selectRef}>
+      <div className="relative w-full " ref={selectRef}>
 <label
-        className={`block mb-2 text-lg font-semibold text-gray-200   px-2 py-2 rounded-md shadow-sm transition-all duration-200 ${
+        className={`scrollDesign block mb-2 text-lg font-semibold text-gray-200   px-2 py-2 rounded-md shadow-sm transition-all duration-200 ${
           required && !isSelected
             ? 'text-red-400 border-b border-red-500'
             : 'text-gray-200 border-b border-indigo-600/40 hover:bg-gray-800/60'
@@ -73,7 +73,7 @@ const CustomSelect = ({ label, options, value, onChange, required = false }) => 
         {label} {required && <span className="text-red-500 font-bold">*</span>}
       </label>       
   <motion.div
-          className={`bg-gray-800/80 backdrop-blur-md rounded-xl p-3 flex items-center justify-between cursor-pointer text-gray-200 hover:bg-gray-800 transition-all duration-300 shadow-md ${
+          className={`bg-gray-800/80 scrollDesign backdrop-blur-md rounded-xl p-3 flex items-center justify-between cursor-pointer text-gray-200 hover:bg-gray-800 transition-all duration-300 shadow-md ${
             required && !isSelected
               ? "border-2 border-red-500"
               : isSelected
@@ -103,7 +103,7 @@ const CustomSelect = ({ label, options, value, onChange, required = false }) => 
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute z-10 w-full mt-1 bg-gray-800/90 backdrop-blur-md rounded-xl shadow-xl max-h-48 overflow-y-auto scroll-design"
+            className="absolute z-10 w-full mt-1 bg-gray-800/90 backdrop-blur-md rounded-xl shadow-xl max-h-48 overflow-y-auto scrollDesign"
           >
             {options.map((option) => (
               <div
@@ -196,31 +196,71 @@ const RecommedPage = () => {
   const [error, setError] = useState(null);
   const [activeSection, setActiveSection] = useState("general");
   const navigate = useNavigate();
+  const [allowReload, setAllowReload] = useState(false); // Flag to allow reload
 
     const [showReloadModal, setShowReloadModal] = useState(false);
   
-    useEffect(()=>{
-      const BeforeUnLoad=(event)=>{
-        const isFormedFilled = Object.values(formData).some(value=>value !=="")
-        if (isFormedFilled){
-          event.preventDefault();
+    // useEffect(()=>{
+    //   const BeforeUnLoad=(event)=>{
+    //     const isFormedFilled = Object.values(formData).some(value=>value !=="")
+    //     if (isFormedFilled){
+    //       event.preventDefault();
+    //       setShowReloadModal(true);
+    //     };
+    //   };
+  
+    //   window.addEventListener("beforeunload",BeforeUnLoad);
+  
+    //   // Cleanup listener on component unmount
+    //   return () => {
+    //     window.removeEventListener("beforeunload", BeforeUnLoad);
+    //   };
+  
+    // },[formData])
+
+    // useEffect(() => {
+    //   const handleBeforeUnload = (event) => {
+    //     const isFormFilled = Object.values(formData).some((value) => value !== "");
+    //     if (isFormFilled) {
+    //       event.preventDefault()
+    //       setShowReloadModal(true); // Show custom modal only
+    //     }
+    //   };
+  
+    //   window.addEventListener("beforeunload", handleBeforeUnload);
+  
+    //   // Cleanup listener on component unmount
+    //   return () => {
+    //     window.removeEventListener("beforeunload", handleBeforeUnload);
+    //   };
+    // }, [formData]);
+  
+
+    useEffect(() => {
+      // Assign the handler to window.onbeforeunload
+      window.onbeforeunload = function (event) {
+        const isFormFilled = Object.values(formData).some((value) => value !== "");
+        if (isFormFilled && !allowReload) {
           setShowReloadModal(true);
-        };
+          window.onbeforeunload = null;
+          return false // Show custom modal
+          // Do not return anything to avoid triggering the default alert
+        }
       };
   
-      window.addEventListener("beforeunload",BeforeUnLoad);
-  
-      // Cleanup listener on component unmount
+      // Cleanup by resetting window.onbeforeunload on unmount
       return () => {
-        window.removeEventListener("beforeunload", BeforeUnLoad);
+        window.onbeforeunload = null;
       };
-  
-    },[formData])
-  
+    }, [formData]);
+
     const handleContinueReload = () => {
       setShowReloadModal(false);
-      window.location.reload(); // Programmatically reload the page
-    };
+      setAllowReload(true)
+      window.onbeforeunload = null;
+      setTimeout(() => {
+        window.location.reload(); // Trigger reload after a slight delay
+      }, 0);    };
   
     const handleCancelReload = () => {
       setShowReloadModal(false);
@@ -247,6 +287,9 @@ const RecommedPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 py-12 px-4 flex items-center justify-center">
+      {showReloadModal && (
+          <ReloadModal onContinue={handleContinueReload} onCancel={handleCancelReload} />
+        )}
       <motion.div
         initial={{ opacity: 0, x: -100 }}
         animate={{ opacity: 1, x: 0 }}
@@ -255,9 +298,7 @@ const RecommedPage = () => {
         className="w-full max-w-3xl bg-gray-800/70 backdrop-blur-xl rounded-2xl p-8 shadow-2xl"
       >
         {isLoading && <LoadingSpinner />}
-        {showReloadModal && (
-          <ReloadModal onContinue={handleContinueReload} onCancel={handleCancelReload} />
-        )}
+        
 
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-8 bg-gradient-to-r from-purple-400 to-indigo-500 bg-clip-text text-transparent text-center">
           Laboratory AI Recommendation

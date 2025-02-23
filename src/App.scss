@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 
-$scrollbar-width: 6px;
-$track-bg: #f1f1f1;
-$thumb-bg: #1e1a5c;
+$scrollbar-width: 4px;
+$track-bg: #1C68AA;
+$thumb-bg: #1C68AA;
 $thumb-hover-bg: #555;
 $border-radius: 20px;
 
@@ -49,18 +49,25 @@ to {
 }
 
 
+// ::-webkit-scrollbar {
+//     width: 2px;
+//     background: #111827;
+//   }
+  
+//   ::-webkit-scrollbar-thumb {
+//     background: #1C68AA;
+//     border-radius: 10px;
+//   }
+
 .scrollDesign{
 
     // Webkit-based browsers (Chrome, Edge, Safari)
   &::-webkit-scrollbar {
     width: $scrollbar-width;
-    height: $scrollbar-width;
+    background: #111827;
+
   }
 
-  &::-webkit-scrollbar-track {
-    background: $track-bg;
-    border-radius: $border-radius;
-  }
 
   &::-webkit-scrollbar-thumb {
     background: $thumb-bg;

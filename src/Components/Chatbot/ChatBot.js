@@ -8,21 +8,7 @@ const ChatBot = () => {
   const containerRef = useRef(null);
       const selectRef = useRef(null); // Ref to track the component's DOM node
   
-  // useEffect(() => {
-  //     const handleClickOutside = (event) => {
-  //       if (selectRef.current && !selectRef.current.contains(event.target)) {
-  //         setIsOpen(false);
-  //       }
-  //     };
-  
-  //     if (isOpen) {
-  //       document.addEventListener('mousedown', handleClickOutside);
-  //     }
-  
-  //     return () => {
-  //       document.removeEventListener('mousedown', handleClickOutside);
-  //     };
-  //   }, [isOpen]);
+ 
 
   useEffect(() => {
     if (!isOpen) return;
@@ -81,7 +67,7 @@ const ChatBot = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: isOpen ? 1 : 0, y: isOpen ? 0 : 20 }}
         transition={{ duration: 0.3 }}
-        className={`absolute bottom-[80px] left-[5px] w-[400px] h-[500px] bg-white bg-opacity-90 backdrop-blur-md rounded shadow-xl transition-all duration-300 ${
+        className={`absolute bottom-[80px] left-[5px] w-[350px] h-[500px] bg-white bg-opacity-90 backdrop-blur-md rounded shadow-xl transition-all duration-300 ${
           isOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
       >
