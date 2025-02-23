@@ -4,6 +4,45 @@ import { motion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import AILoadingSimulation from '../Loading/AILoadingSimulation';
 
+
+
+const ReloadModal = ({ onContinue, onCancel }) => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="fixed h-[100vh] w-[100%] z-[999] inset-0 bg-gray-900/80 backdrop-blur-sm flex items-center justify-center "
+  >
+    <div className="bg-gray-800 rounded-xl p-6 shadow-2xl max-w-sm w-full">
+      <h2 className="text-xl font-semibold text-white mb-4">
+        Are you sure you want to Back?
+      </h2>
+      <p className="text-gray-300 mb-6">
+        Your current progress will be lost.
+      </p>
+      <div className="flex gap-4 justify-center">
+        <motion.button
+          onClick={onContinue}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-indigo-600 text-white px-4 py-2 rounded-xl shadow-md hover:bg-indigo-700 transition-all duration-300"
+        >
+          Continue (Go to back)
+        </motion.button>
+        <motion.button
+          onClick={onCancel}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-gray-600 text-white px-4 py-2 rounded-xl shadow-md hover:bg-gray-700 transition-all duration-300"
+        >
+          Cancel 
+        </motion.button>
+      </div>
+    </div>
+  </motion.div>
+);
+
+
 const ReviewItem = ({ label, value }) => (
   <motion.div
     initial={{ opacity: 0, y: 10 }}
@@ -18,42 +57,6 @@ const ReviewItem = ({ label, value }) => (
   </motion.div>
 );
 
-
-const ReloadModal = ({ onContinue, onCancel }) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    className="fixed inset-0 bg-gray-900/80 backdrop-blur-sm flex items-center justify-center z-50"
-  >
-    <div className="bg-gray-800 rounded-xl p-6 shadow-2xl max-w-sm w-full">
-      <h2 className="text-xl font-semibold text-white mb-4">
-        Are you sure you want to reload?
-      </h2>
-      <p className="text-gray-300 mb-6">
-        Your current progress will be lost. Choose an option below:
-      </p>
-      <div className="flex gap-4 justify-center">
-        <motion.button
-          onClick={onContinue}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-xl shadow-md hover:bg-indigo-700 transition-all duration-300"
-        >
-          Continue (Go to Home)
-        </motion.button>
-        <motion.button
-          onClick={onCancel}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-gray-600 text-white px-4 py-2 rounded-xl shadow-md hover:bg-gray-700 transition-all duration-300"
-        >
-          Cancel 
-        </motion.button>
-      </div>
-    </div>
-  </motion.div>
-);
 const ReviewPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -61,36 +64,98 @@ const ReviewPage = () => {
   const [response, setResponse] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [showReloadModal, setShowReloadModal] = useState(false);
+    const [showReloadModal, setShowReloadModal] = useState(false);
+  
 
-  useEffect(()=>{
-    const BeforeUnLoad=(e)=>{
-      const isFormedFilled = Object.values(RecommendationData).some(value=>value !=="")
-      if (isFormedFilled){
-        e.preventDefault();
-        setShowReloadModal(true);
-      };
-    };
+  // useEffect(()=>{
+  //   const BeforeUnLoad=(e)=>{
+  //     const isFormedFilled = Object.values(RecommendationData).some(value=>value !=="")
+  //     if (isFormedFilled){
+  //       navigate('/')
 
-    window.addEventListener("beforeunload",BeforeUnLoad);
+  //     };
+  //   };
 
-    // Cleanup listener on component unmount
-    return () => {
-      window.removeEventListener("beforeunload", BeforeUnLoad);
-    };
+  //   window.addEventListener("beforeunload",BeforeUnLoad);
 
-  },[RecommendationData])
+  //   // Cleanup listener on component unmount
+  //   return () => {
+  //     window.removeEventListener("beforeunload", BeforeUnLoad);
+  //   };
 
-  const handleContinueReload = () => {
+  // },[RecommendationData])
+
+
+//   useEffect(() => {
+//     // Function to handle page load/reload
+//     const handleLoad = () => {
+//         const isFormFilled = Object.values(RecommendationData).some(value => value !== "");
+//         if (isFormFilled) {
+//             navigate('/');
+//         }
+//     };
+
+//     // Check on initial load
+//     handleLoad();
+
+//     // Optionally, you can still keep the beforeunload for warning
+//     const handleBeforeUnload = (e) => {
+//         const isFormFilled = Object.values(RecommendationData).some(value => value !== "");
+//         if (isFormFilled) {
+//             e.preventDefault();
+//             e.returnValue = ''; // Shows a confirmation dialog
+//         }
+//     };
+
+//     window.addEventListener('beforeunload', handleBeforeUnload);
+
+//     // Cleanup
+//     return () => {
+//         window.removeEventListener('beforeunload', handleBeforeUnload);
+//     };
+// }, [RecommendationData, navigate]);
+
+
+const handleContinueReload = () => {
     setShowReloadModal(false);
-    navigate("/"); // Navigate to home page (adjust route as needed)
-
-    // window.location.reload(); // Programmatically reload the page
+    navigate("/");
   };
 
   const handleCancelReload = () => {
     setShowReloadModal(false);
   };
+
+useEffect(() => {
+  const handleBeforeUnload = (e) => {
+      const isFormFilled = Object.values(RecommendationData).some(value => value !== "");
+      if (isFormFilled) {
+          // This triggers the browser's confirmation dialog
+          e.preventDefault();
+          e.returnValue = 'Are you sure you want to reload?'; // Custom message (some browsers might ignore this)
+      }
+  };
+
+  // Add listener for beforeunload
+  window.addEventListener('beforeunload', handleBeforeUnload);
+
+  // Handle the actual navigation after confirmation
+  const handleUnload = () => {
+      const isFormFilled = Object.values(RecommendationData).some(value => value !== "");
+      if (isFormFilled) {
+          navigate('/'); // Navigate to home after reload is confirmed
+      }
+  };
+
+  // Note: We can't directly catch the confirmation result,
+  // so we need to handle navigation on next load
+  window.addEventListener('unload', handleUnload);
+
+  // Cleanup both listeners
+  return () => {
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+    window.removeEventListener('unload', handleUnload);
+  };
+}, [RecommendationData, navigate]);
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -118,7 +183,11 @@ const ReviewPage = () => {
   };
 
   return (
+    
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 py-12 px-4 flex items-center justify-center">
+      {showReloadModal && (
+          <ReloadModal onContinue={handleContinueReload} onCancel={handleCancelReload} />
+        )}
       <motion.div
         initial={{ opacity: 0, x: 100 }}
         animate={{ opacity: 1, x: 0 }}
@@ -131,14 +200,12 @@ const ReviewPage = () => {
         </h1>
 
         <section className="mb-10">
-        {showReloadModal && (
-          <ReloadModal onContinue={handleContinueReload} onCancel={handleCancelReload} />
-        )}
+        
         {isLoading && <AILoadingSimulation />}
 
           <h2 className="text-2xl font-semibold text-white mb-6 pb-2">General Information</h2>
           <div className="space-y-4">
-            <ReviewItem label="Country" value={RecommendationData.country} />
+            <ReviewItem label="Country" value={RecommendationData?.country} />
             <ReviewItem label="Experience" value={RecommendationData.experience} />
             <ReviewItem label="Role" value={RecommendationData.role} />
             <ReviewItem label="AI Familiarity" value={RecommendationData.ai_familiarity} />
@@ -173,7 +240,7 @@ const ReviewPage = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="w-full py-3 px-6 bg-gray-700/80 text-white font-semibold rounded-xl shadow-md hover:bg-gray-700 transition-all duration-300"
-            onClick={() => navigate('/')}
+            onClick={() =>setShowReloadModal(true)}
           >
             Back to Recommend to AI
           </motion.button>

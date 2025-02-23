@@ -4,41 +4,7 @@ import { generalOptions, challengeOptions } from '../Data';
 import { useNavigate } from 'react-router-dom';
 import { FaInfoCircle, FaExclamationTriangle,  FaDollarSign } from 'react-icons/fa';
 
-const ReloadModal = ({ onContinue, onCancel }) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    className="absolute h-[100vh] w-[100%] z-[999] inset-0 bg-gray-900/80 backdrop-blur-sm flex items-center justify-center "
-  >
-    <div className="bg-gray-800 rounded-xl p-6 shadow-2xl max-w-sm w-full">
-      <h2 className="text-xl font-semibold text-white mb-4">
-        Are you sure you want to reload?
-      </h2>
-      <p className="text-gray-300 mb-6">
-        Your current progress will be lost. Choose an option below:
-      </p>
-      <div className="flex gap-4 justify-center">
-        <motion.button
-          onClick={onContinue}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-xl shadow-md hover:bg-indigo-700 transition-all duration-300"
-        >
-          Restart
-        </motion.button>
-        <motion.button
-          onClick={onCancel}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-gray-600 text-white px-4 py-2 rounded-xl shadow-md hover:bg-gray-700 transition-all duration-300"
-        >
-          Cancel 
-        </motion.button>
-      </div>
-    </div>
-  </motion.div>
-);
+
 const CustomSelect = ({ label, options, value, onChange, required = false }) => {
     const [isOpen, setIsOpen] = useState(false);
     const isSelected = !!value;
@@ -196,76 +162,28 @@ const RecommedPage = () => {
   const [error, setError] = useState(null);
   const [activeSection, setActiveSection] = useState("general");
   const navigate = useNavigate();
-  const [allowReload, setAllowReload] = useState(false); // Flag to allow reload
 
-    const [showReloadModal, setShowReloadModal] = useState(false);
   
-    // useEffect(()=>{
-    //   const BeforeUnLoad=(event)=>{
-    //     const isFormedFilled = Object.values(formData).some(value=>value !=="")
-    //     if (isFormedFilled){
-    //       event.preventDefault();
-    //       setShowReloadModal(true);
-    //     };
-    //   };
-  
-    //   window.addEventListener("beforeunload",BeforeUnLoad);
-  
-    //   // Cleanup listener on component unmount
-    //   return () => {
-    //     window.removeEventListener("beforeunload", BeforeUnLoad);
-    //   };
-  
-    // },[formData])
-
-    // useEffect(() => {
-    //   const handleBeforeUnload = (event) => {
-    //     const isFormFilled = Object.values(formData).some((value) => value !== "");
-    //     if (isFormFilled) {
-    //       event.preventDefault()
-    //       setShowReloadModal(true); // Show custom modal only
-    //     }
-    //   };
-  
-    //   window.addEventListener("beforeunload", handleBeforeUnload);
-  
-    //   // Cleanup listener on component unmount
-    //   return () => {
-    //     window.removeEventListener("beforeunload", handleBeforeUnload);
-    //   };
-    // }, [formData]);
-  
-
-    useEffect(() => {
-      // Assign the handler to window.onbeforeunload
-      window.onbeforeunload = function (event) {
-        const isFormFilled = Object.values(formData).some((value) => value !== "");
-        if (isFormFilled && !allowReload) {
-          setShowReloadModal(true);
-          window.onbeforeunload = null;
-          return false // Show custom modal
-          // Do not return anything to avoid triggering the default alert
-        }
+    useEffect(()=>{
+      const BeforeUnLoad=(event)=>{
+        const isFormedFilled = Object.values(formData).some(value=>value !=="")
+        if (isFormedFilled){
+          event.preventDefault();
+        };
       };
   
-      // Cleanup by resetting window.onbeforeunload on unmount
+      window.addEventListener("beforeunload",BeforeUnLoad);
+  
+      // Cleanup listener on component unmount
       return () => {
-        window.onbeforeunload = null;
+        window.removeEventListener("beforeunload", BeforeUnLoad);
       };
-    }, [formData]);
-
-    const handleContinueReload = () => {
-      setShowReloadModal(false);
-      setAllowReload(true)
-      window.onbeforeunload = null;
-      setTimeout(() => {
-        window.location.reload(); // Trigger reload after a slight delay
-      }, 0);    };
   
-    const handleCancelReload = () => {
-      setShowReloadModal(false);
-      navigate("/"); // Navigate to home page (adjust route as needed)
-    };
+    },[formData])
+
+  
+
+
 
   
 
@@ -287,9 +205,9 @@ const RecommedPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 py-12 px-4 flex items-center justify-center">
-      {showReloadModal && (
+      {/* {showReloadModal && (
           <ReloadModal onContinue={handleContinueReload} onCancel={handleCancelReload} />
-        )}
+        )} */}
       <motion.div
         initial={{ opacity: 0, x: -100 }}
         animate={{ opacity: 1, x: 0 }}
