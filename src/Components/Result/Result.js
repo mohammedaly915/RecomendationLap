@@ -76,18 +76,18 @@ const ResultPage = () => {
                 <div className="w-full">
                   <p className="text-gray-400 text-sm uppercase tracking-wide mb-2">Prediction Probabilities</p>
                   <div className="space-y-4">
-                    {Object.entries(result.probabilities).map(([key, value], index) => (
+                    {Object.entries(result.strategy_percentages).map(([key, value], index) => (
                       <div key={index} className="flex flex-col gap-1">
                         <div className="flex justify-between items-center">
                           <span className="text-white font-medium text-sm">{key}</span>
                           <span className="text-blue-300 text-sm font-semibold">
-                            {(value * 100).toFixed(2)}%
+                            {(value ).toFixed(2)}%
                           </span>
                         </div>
                         <div className="w-full bg-gray-700/50 rounded-full h-2 overflow-hidden">
                           <motion.div
                             initial={{ width: 0 }}
-                            animate={{ width: `${value * 100}%` }}
+                            animate={{ width: `${value }%` }}
                             transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
                             className="h-full bg-gradient-to-r from-blue-500 to-indigo-500"
                           />

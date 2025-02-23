@@ -263,21 +263,21 @@ const RecommedPage = () => {
             <section>
               <div className="space-y-6">
                 <CustomSelect
-                  label="In which country is your laboratory or organization based?"
+                  label="Country "
                   options={generalOptions.country}
                   value={formData.country}
                   onChange={(value) => setFormData({ ...formData, country: value })}
                 />
                 {/* Replaced with CustomRadioGroup */}
                 <CustomRadioGroup
-                  label="How many years of experience do you have in your field?"
+                  label="Years of experience in the current laboratory"
                   options={generalOptions.experience}
                   value={formData.experience}
                   onChange={(value) => setFormData({ ...formData, experience: value })}
                 />
 
                 <CustomSelect
-                  label="What is your role in the organization?"
+                  label="Your role in the organization"
                   options={generalOptions.role}
                   value={formData.role}
                   onChange={(value) => setFormData({ ...formData, role: value })}
@@ -285,14 +285,14 @@ const RecommedPage = () => {
 
                 {/* Replaced with CustomRadioGroup */}
                 <CustomRadioGroup
-                  label="How familiar are you with AI technologies in laboratory operations?"
+                  label="Your familiarity with AI"
                   options={generalOptions.aiFamiliarity}
                   value={formData.ai_familiarity}
                   onChange={(value) => setFormData({ ...formData, ai_familiarity: value })}
                 />
 
                 <CustomRadioGroup
-                  label="To what extent is AI currently used in your laboratory operations?"
+                  label="Current AI usage in your laboratory"
                   options={generalOptions.aiUsage}
                   value={formData.ai_usage}
                   onChange={(value) => setFormData({ ...formData, ai_usage: value })}

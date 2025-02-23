@@ -24,8 +24,7 @@ function App() {
           </Routes> 
         </main>
         <ChatBot />  
-        {/* <ChatBotApi />   */}
-        {/* <GradioChatBot */}
+
          
 
       </div> 
