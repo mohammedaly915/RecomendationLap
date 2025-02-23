@@ -2,15 +2,20 @@ export const generalOptions = {
     country: [
       { value: "Saudi Arabia", label: "Saudi Arabia" },
       { value: "Kuwait", label: "Kuwait" },
+      { value: "Egypt", label: "Egypt" },
       { value: "United Arabia Emarites", label: "United Arabia Emarites" },
+      { value: "India", label: "India" },
       { value: "Pakistan", label: "Pakistan" },
       { value: "Bangladesh", label: "Bangladesh" },
-      { value: "Egypt", label: "Egypt" },
-      { value: "Jordan", label: "Jordan" },
-      { value: "Canada", label: "Canada" },
-      { value: "India", label: "India" },
       { value: "Malaysia", label: "Malaysia" },
+      { value: "Canada", label: "Canada" },
+      { value: "Tanzania", label: "Tanzania" },
+      { value: "Bahrin", label: "Bahrin" },
+      { value: "Jordan", label: "Jordan" },
+      { value: "Qatar", label: "Qatar" },
       { value: "Oman", label: "Oman" },
+      { value: "United States Of America", label: "United States Of America" },
+      { value: "Germany", label: "Germany" },
     ],
     experience: [
       { value: "Less than 1 years", label: "Less than 1 years" },
@@ -57,8 +62,8 @@ export const generalOptions = {
 
   // Options for Challenges Section
 export  const challengeOptions = [
-    { value: "No Barrier", label: "No Barrier" },
-    { value: "Minor Barrier", label: "Minor Barrier" },
+  { value: "Not a Barrier", label: "Not a Barrier" },
+  { value: "Minor Barrier", label: "Minor Barrier" },
     { value: "Moderate Barrier", label: "Moderate Barrier" },
     { value: "Significant Barrier", label: "Significant Barrier" },
     { value: "Major Barrier", label: "Major Barrier" },

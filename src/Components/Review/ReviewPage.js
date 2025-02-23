@@ -1,8 +1,8 @@
 // ReviewPage.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
-import AILoadingSimulation from './Loading/AILoadingSimulation';
+import AILoadingSimulation from '../Loading/AILoadingSimulation';
 
 const ReviewItem = ({ label, value }) => (
   <motion.div
@@ -18,6 +18,42 @@ const ReviewItem = ({ label, value }) => (
   </motion.div>
 );
 
+
+const ReloadModal = ({ onContinue, onCancel }) => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="fixed inset-0 bg-gray-900/80 backdrop-blur-sm flex items-center justify-center z-50"
+  >
+    <div className="bg-gray-800 rounded-xl p-6 shadow-2xl max-w-sm w-full">
+      <h2 className="text-xl font-semibold text-white mb-4">
+        Are you sure you want to reload?
+      </h2>
+      <p className="text-gray-300 mb-6">
+        Your current progress will be lost. Choose an option below:
+      </p>
+      <div className="flex gap-4 justify-center">
+        <motion.button
+          onClick={onContinue}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-indigo-600 text-white px-4 py-2 rounded-xl shadow-md hover:bg-indigo-700 transition-all duration-300"
+        >
+          Continue (Go to Home)
+        </motion.button>
+        <motion.button
+          onClick={onCancel}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-gray-600 text-white px-4 py-2 rounded-xl shadow-md hover:bg-gray-700 transition-all duration-300"
+        >
+          Cancel 
+        </motion.button>
+      </div>
+    </div>
+  </motion.div>
+);
 const ReviewPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -25,6 +61,36 @@ const ReviewPage = () => {
   const [response, setResponse] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showReloadModal, setShowReloadModal] = useState(false);
+
+  useEffect(()=>{
+    const BeforeUnLoad=(e)=>{
+      const isFormedFilled = Object.values(RecommendationData).some(value=>value !=="")
+      if (isFormedFilled){
+        e.preventDefault();
+        setShowReloadModal(true);
+      };
+    };
+
+    window.addEventListener("beforeunload",BeforeUnLoad);
+
+    // Cleanup listener on component unmount
+    return () => {
+      window.removeEventListener("beforeunload", BeforeUnLoad);
+    };
+
+  },[RecommendationData])
+
+  const handleContinueReload = () => {
+    setShowReloadModal(false);
+    navigate("/"); // Navigate to home page (adjust route as needed)
+
+    // window.location.reload(); // Programmatically reload the page
+  };
+
+  const handleCancelReload = () => {
+    setShowReloadModal(false);
+  };
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -65,6 +131,9 @@ const ReviewPage = () => {
         </h1>
 
         <section className="mb-10">
+        {showReloadModal && (
+          <ReloadModal onContinue={handleContinueReload} onCancel={handleCancelReload} />
+        )}
         {isLoading && <AILoadingSimulation />}
 
           <h2 className="text-2xl font-semibold text-white mb-6 pb-2">General Information</h2>

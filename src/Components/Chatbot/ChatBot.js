@@ -46,40 +46,43 @@ const ChatBot = () => {
   }, [isOpen]);
 
   return (
-    <div className="fixed bottom-8 left-8 z-50">
+    <div className="fixed bottom-[50px] left-8 z-50">
       {/* Updated Floating Chat Button */}
       <motion.button
-        onClick={() => setIsOpen(!isOpen)}
-        className={`bg-indigo-600 text-white p-3 rounded-full shadow-lg hover:bg-indigo-700 transition-all duration-300 ${
-          isOpen ? "scale-0" : "scale-100"
+        onClick={() => setIsOpen(true)}
+        className={` text-white p-3 rounded shadow-lg hover:bg-blue-700 transition-all duration-300 ${
+          isOpen ? 'scale-100 bg-blue-700' : ' bg-gradient-to-r from-blue-500 to-indigo-600'
         }`}
-        whileHover={{ scale: 1.15 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: isOpen? 1 :1.2 }}
+        whileTap={{ scale: 0.5 }}
       >
         <MdChat size={28} />
       </motion.button>
 
       {/* Chat Window */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: isOpen ? 1 : 0, y: isOpen ? 0 : 20 }}
         transition={{ duration: 0.3 }}
-        className={`absolute bottom-16 left-16 w-80 h-[500px] bg-white bg-opacity-90 backdrop-blur-md rounded-xl shadow-xl transition-all duration-300 ${
+        className={`absolute bottom-[150px] left-[15px] w-80 h-[500px] bg-white bg-opacity-90 backdrop-blur-md rounded shadow-xl transition-all duration-300 ${
           isOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
       >
         {/* Updated Header */}
         <div className="bg-gradient-to-br from-gray-900 via-blue-900 to-indigo-900 text-white p-3 rounded-t-xl flex justify-between items-center shadow-md">
+            <div>
           <div className="flex items-center space-x-2">
             <MdChat size={24} className="text-indigo-200" />
-            <div>
             <h3 className="text-sm font-medium tracking-wide">
               AI Strategy Chatbot <span className="text-indigo-200">by Dr. Mohamed Helmy</span>
             </h3>
+            </div>
+            
+            
+              
             <p className="text-xs text-indigo-200">
                   Ask me anything about AI strategies for labs, brought to you by Dr. Mohamed Helmy’s research!
                 </p>
-            </div>
           </div>
           <button
             onClick={() => setIsOpen(false)}
@@ -92,7 +95,7 @@ const ChatBot = () => {
         {/* Gradio Container */}
         <div
           ref={containerRef}
-          className="h-[calc(100%-48px)] w-full overflow-hidden rounded-b-xl" // Adjusted height for new header
+          className="h-[calc(100%-0px)] w-full overflow-hidden rounded-b-xl" // Adjusted height for new header
         />
       </motion.div>
     </div>

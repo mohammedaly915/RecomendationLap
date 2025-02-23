@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaRobot } from 'react-icons/fa';
-import AILoadingSimulation from './Loading/AILoadingSimulation';
+import AILoadingSimulation from '../Loading/AILoadingSimulation';
 
 const ResultPage = () => {
   const location = useLocation();
