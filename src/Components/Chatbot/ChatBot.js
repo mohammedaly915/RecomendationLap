@@ -6,6 +6,23 @@ import { motion } from "framer-motion"; // Optional for animations
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef(null);
+      const selectRef = useRef(null); // Ref to track the component's DOM node
+  
+  // useEffect(() => {
+  //     const handleClickOutside = (event) => {
+  //       if (selectRef.current && !selectRef.current.contains(event.target)) {
+  //         setIsOpen(false);
+  //       }
+  //     };
+  
+  //     if (isOpen) {
+  //       document.addEventListener('mousedown', handleClickOutside);
+  //     }
+  
+  //     return () => {
+  //       document.removeEventListener('mousedown', handleClickOutside);
+  //     };
+  //   }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -46,7 +63,7 @@ const ChatBot = () => {
   }, [isOpen]);
 
   return (
-    <div className="fixed bottom-[50px] left-8 z-50">
+    <div className="fixed bottom-[50px] left-8 z-50 " ref={selectRef}>
       {/* Updated Floating Chat Button */}
       <motion.button
         onClick={() => setIsOpen(true)}
@@ -64,7 +81,7 @@ const ChatBot = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: isOpen ? 1 : 0, y: isOpen ? 0 : 20 }}
         transition={{ duration: 0.3 }}
-        className={`absolute bottom-[150px] left-[15px] w-80 h-[500px] bg-white bg-opacity-90 backdrop-blur-md rounded shadow-xl transition-all duration-300 ${
+        className={`absolute bottom-[80px] left-[15px] w-[400px] h-[500px] bg-white bg-opacity-90 backdrop-blur-md rounded shadow-xl transition-all duration-300 ${
           isOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
       >

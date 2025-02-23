@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { generalOptions, challengeOptions } from '../Data';
 import { useNavigate } from 'react-router-dom';
@@ -42,11 +42,35 @@ const ReloadModal = ({ onContinue, onCancel }) => (
 const CustomSelect = ({ label, options, value, onChange, required = false }) => {
     const [isOpen, setIsOpen] = useState(false);
     const isSelected = !!value;
+    const selectRef = useRef(null); // Ref to track the component's DOM node
+
+  // Handle clicks outside to close the dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (selectRef.current && !selectRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
   
     return (
-      <div className="relative w-full">
-        <label className="block text-gray-300 mb-2 text-sm font-medium">{label}</label>
-        <motion.div
+      <div className="relative w-full" ref={selectRef}>
+<label
+    className={`block mb-2 text-md font-semibold text-gray-200 bg-gray-900/50 px-2 py-1 rounded-md shadow-sm ${
+      required && !isSelected ? "text-red-400" : "text-gray-200"
+    }`}
+  >
+    {label} {required && <span className="text-red-500 font-bold">*</span>}
+  </label>        
+  <motion.div
           className={`bg-gray-800/80 backdrop-blur-md rounded-xl p-3 flex items-center justify-between cursor-pointer text-gray-200 hover:bg-gray-800 transition-all duration-300 shadow-md ${
             required && !isSelected
               ? "border-2 border-red-500"
@@ -97,6 +121,8 @@ const CustomSelect = ({ label, options, value, onChange, required = false }) => 
     );
   };
 const CustomRadioGroup = ({ label, options, value, onChange}) => {
+
+  
   return (
     <div className="w-full">
       <label className="block text-gray-300 mb-2 text-sm font-medium flex items-center gap-2">
