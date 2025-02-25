@@ -170,7 +170,7 @@ const currentSteps = strategySteps[result.predicted_strategy] || [];
                           transition={{ duration: 0.5, delay: 0.6 + index * 0.2 }}
                           className="flex items-start gap-3"
                         >
-                          <FaCheckCircle className="text-blue-400 mt-1 flex-shrink-0" />
+                          <FaCheckCircle className="text-indigo-500 mt-1 flex-shrink-0" />
                           <div>
                             <p className="text-white font-semibold">{`${index + 1}. ${step.title}`}</p>
                             <p className="text-gray-300 text-sm">{step.description}</p>
